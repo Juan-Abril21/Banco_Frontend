@@ -8,16 +8,16 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Instala dependencias
-RUN npm install --legacy-peer-deps
+RUN npm install
 
 # Copia el resto del código de la aplicación
 COPY . .
 
-# Construye la aplicación Next.js
+# Construye la aplicación Vite
 RUN npm run build
 
-# Instala las dependencias necesarias para producción
-RUN npm prune --production
+# Instala un servidor estático para servir la aplicación
+RUN npm install -g serve
 
 # Etapa 2: Servidor
 FROM node:18-alpine AS runner
@@ -26,13 +26,14 @@ FROM node:18-alpine AS runner
 WORKDIR /app
 
 # Copia los archivos construidos desde la etapa anterior
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/public ./public
+
+# Instala serve globalmente
+RUN npm install -g serve
 
 # Exponer el puerto de la aplicación
 EXPOSE 3000
 
 # Comando para iniciar la aplicación en modo producción
-CMD ["npm", "run", "start"]
+CMD ["serve", "-s", "dist", "-l", "3000"]
