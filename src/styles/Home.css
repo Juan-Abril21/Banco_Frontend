@@ -1,0 +1,27 @@
+.nav {
+  background-color: #23272f;
+}
+
+.titulo {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.botones {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  gap: 10px;
+}
+.explicacion {
+  text-align: center;
+}
+
+.theme-toggle{
+  position: absolute;
+  padding: 0.5rem; 
+}
