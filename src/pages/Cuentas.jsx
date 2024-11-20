@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import "@/Styles/cuentas.css";
+import "@/styles/cuentas.css";
 import Tables from '@/components/Tables';
 
 export default function Cuentas() {
