@@ -3,7 +3,7 @@ pipeline{
 
     tools {nodejs "node_default"}
     environment {
-        DOCKER_IMAGE = banco_frontend
+        DOCKER_IMAGE = 'banco_frontend'
     }
     stages{
         stage('Initialize') {
