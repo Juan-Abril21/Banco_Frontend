@@ -20,8 +20,8 @@ import { InputDemo } from "@/components/Input";
 export default function Tables() {
   const [searchCedula, setSearchCedula] = useState("");
   const [clientes, setClientes] = useState([]);
-  const [loadingDepositId, setLoadingDepositId] = useState(null); 
-  const navigate = useNavigate(); 
+  const [loadingDepositId, setLoadingDepositId] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchClientes = async () => {
@@ -36,12 +36,19 @@ export default function Tables() {
   );
 
   const handleEliminarCuenta = async (id) => {
-    await eliminarCuenta(id);
-    navigate("/");
+    try {
+      await eliminarCuenta(id);
+      // Actualizar la lista de clientes después de eliminar
+      setClientes(clientes.filter(cliente => cliente.cuentaId !== id));
+      return true; // Indica éxito
+    } catch (error) {
+      console.error("Error al eliminar cuenta:", error);
+      return false; // Indica fallo
+    }
   };
 
   const handleDepositar = async (idCuenta, idCliente, cedulacliente, nombreCliente, saldoAnterior, correo) => {
-    setLoadingDepositId(idCuenta); 
+    setLoadingDepositId(idCuenta);
     navigate(`/depositar`, {
       state: {
         idCuenta,
@@ -91,7 +98,7 @@ export default function Tables() {
               <TableCell>{invoice.correo}</TableCell>
               <TableCell className="text-right">
                 <AlertaW2Buttons
-                  Descripcion={`ID de la cuenta: ${invoice.ID}`}
+                  Descripcion={`ID de la cuenta: ${invoice.cuentaId}`}
                   click={() => handleEliminarCuenta(invoice.cuentaId)}
                   TextoBoton={"Eliminar"}
                   Dialogo={`¿Está seguro que quiere eliminar la cuenta?`}
