@@ -1,8 +1,8 @@
+import "../styles/Home.css";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Button } from "../components/ui/button";
 import { ButtonLoading } from "@/components/ButtonLoading";
-import "../styles/Home.css";
 import { CiDark, CiLight } from "react-icons/ci";
 
 export default function Home() {
