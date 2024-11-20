@@ -6,7 +6,7 @@ import "../styles/Home.css";
 import { CiDark, CiLight } from "react-icons/ci";
 
 export default function Home() {
-  const navigate = useNavigate(); // Add this line
+  const navigate = useNavigate(); 
   const [loadingButton, setLoadingButton] = useState("");
   const [darkMode, setDarkMode] = useState(false);
 
