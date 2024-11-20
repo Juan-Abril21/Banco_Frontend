@@ -1,7 +1,7 @@
+import "@/styles/Home.css";
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import "@/styles/Home.css";
 import { InputWithLabel } from "@/components/InputWithLabel";
 import Alerta from "@/components/Alerta";
 import { Deposito } from "../peticiones/hacerDeposito";
