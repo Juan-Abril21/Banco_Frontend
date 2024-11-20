@@ -1,8 +1,8 @@
+import "@/styles/cuenta.css";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { InputWithLabel } from "@/components/InputWithLabel";
-import "@/styles/cuenta.css";
 import { InputWithButton } from "@/components/InputWithButton";
 import { postCuenta } from "../peticiones/crearCuenta";
 import { getCliente } from "../peticiones/getCliente";

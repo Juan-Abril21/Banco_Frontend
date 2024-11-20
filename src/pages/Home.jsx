@@ -1,12 +1,12 @@
+import "../styles/Home.css";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Button } from "../components/ui/button";
 import { ButtonLoading } from "@/components/ButtonLoading";
-import "../styles/Home.css";
 import { CiDark, CiLight } from "react-icons/ci";
 
 export default function Home() {
-  const navigate = useNavigate(); // Add this line
+  const navigate = useNavigate(); 
   const [loadingButton, setLoadingButton] = useState("");
   const [darkMode, setDarkMode] = useState(false);
 

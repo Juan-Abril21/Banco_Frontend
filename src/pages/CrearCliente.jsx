@@ -24,7 +24,6 @@ export default function CrearCliente() {
     }
 
     const cliente = { nombre, cedula, correo };
-
     setIsLoading(true); 
     setAlerta("");
 
