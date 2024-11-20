@@ -46,7 +46,7 @@ pipeline{
         stage('Trivy Scan'){
             steps{
                 script{
-                    sh 'docker run --rm -v "/var/jenkins_home/workspace/CI Frontend:/root/.cache/" aquasec/trivy:latest -q image --severity CRITICAL --light joseph888/banco_frontend:latest'
+                    sh 'docker run --rm -v "/var/jenkins_home/workspace/CI Frontend:/root/.cache/" aquasec/trivy:latest -q image --light joseph888/banco_frontend:latest'
                 }
             }
         }
