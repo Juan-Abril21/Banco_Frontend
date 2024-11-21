@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   AlertDialog,
   AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -26,6 +25,7 @@ const AlertaW2Buttons = ({
   click,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const navigate = useNavigate();
 
@@ -35,36 +35,65 @@ const AlertaW2Buttons = ({
   };
 
   const handleEliminarClick = async () => {
-    setLoadingDelete(true);
-    await click();
-    setLoadingDelete(false);
-    navigate(path1);
+    try {
+      setLoadingDelete(true);
+      await click();
+      setLoadingDelete(false);
+      setIsOpen(false);
+      setShowSuccessAlert(true);
+    } catch (error) {
+      console.error("Error al eliminar:", error);
+      setLoadingDelete(false);
+    }
+  };
+
+  const handleSuccessConfirm = () => {
+    setShowSuccessAlert(false);
+    window.location.reload();
   };
 
   return (
-    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialogTrigger asChild>
-        <Button onClick={() => setIsOpen(true)}>{TextoBoton}</Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent className="AlertDialogContent bg-white dark:bg-gray-800 dark:text-white">
-        <AlertDialogHeader>
-          <AlertDialogTitle>{Dialogo}</AlertDialogTitle>
-          <AlertDialogDescription>{Descripcion}</AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          {loadingDelete ? (
-            <ButtonLoading className="boton1" />
-          ) : (
-            <AlertDialogAction className="boton1" onClick={handleEliminarClick}>
-              {alertButton1}
+    <>
+      <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+        <AlertDialogTrigger asChild>
+          <Button onClick={() => setIsOpen(true)}>{TextoBoton}</Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent className="AlertDialogContent bg-white dark:bg-gray-800 dark:text-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle>{Dialogo}</AlertDialogTitle>
+            <AlertDialogDescription>{Descripcion}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            {loadingDelete ? (
+              <ButtonLoading className="boton1" />
+            ) : (
+              <AlertDialogAction className="boton1" onClick={handleEliminarClick}>
+                {alertButton1}
+              </AlertDialogAction>
+            )}
+            <AlertDialogAction className="boton2" onClick={handleVolver}>
+              {alertButton2}
             </AlertDialogAction>
-          )}
-          <AlertDialogAction className="boton2" onClick={handleVolver}>
-            {alertButton2}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog open={showSuccessAlert} onOpenChange={setShowSuccessAlert}>
+        <AlertDialogContent className="AlertDialogContent bg-white dark:bg-gray-800 dark:text-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle>¡Éxito!</AlertDialogTitle>
+            <AlertDialogDescription>
+              La cuenta ha sido eliminada correctamente
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={handleSuccessConfirm}>
+              Aceptar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 };
 

@@ -7,6 +7,7 @@ import { InputWithButton } from "@/components/InputWithButton";
 import { postCuenta } from "../peticiones/crearCuenta";
 import { getCliente } from "../peticiones/getCliente";
 import { ButtonLoading } from "@/components/ButtonLoading";
+import Alerta from "@/components/Alerta";
 
 export default function CrearCuenta() {
   const navigate = useNavigate();
@@ -15,32 +16,52 @@ export default function CrearCuenta() {
   const [inputsVisibles, setInputsVisibles] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
-  const [error, setError] = useState(null); 
+  const [error, setError] = useState(null);
   const [cuentaCreada, setCuentaCreada] = useState(null);
+  const [alerta, setAlerta] = useState("");
+  const [mostrarAlerta, setMostrarAlerta] = useState(false);
 
   const handleCrear = async () => {
+    if (!cedula || !nombre) {
+      setAlerta("Todos los campos son obligatorios");
+      setMostrarAlerta(true);
+      return;
+    }
+
     const cuenta = {
       nombre: nombre,
       cedula: cedula,
     };
     setCuentaCreada(cuenta);
     setIsCreating(true);
+    setAlerta("");
 
     try {
       await postCuenta(cedula);
+      setAlerta("Cuenta creada con éxito");
+      setMostrarAlerta(true);
       setIsCreating(false);
     } catch (error) {
       console.error("Error al crear cuenta:", error);
+      setAlerta("Ocurrió un error al crear la cuenta");
+      setMostrarAlerta(true);
       setIsCreating(false);
     }
   };
 
   const verificarCedula = async () => {
+    if (!cedula) {
+      setAlerta("Por favor ingrese una cédula");
+      setMostrarAlerta(true);
+      return;
+    }
+
     setIsVerifying(true);
-    setError(null); 
+    setError(null);
+    
     try {
       const cliente = await getCliente(cedula);
-      if (cliente && cliente.nombre) { 
+      if (cliente && cliente.nombre) {
         setNombre(cliente.nombre);
         setInputsVisibles(true);
       } else {
@@ -51,7 +72,8 @@ export default function CrearCuenta() {
       if (error.response && error.response.status === 404) {
         navigate("/crearCliente");
       } else {
-        setError("Ha ocurrido un error al verificar la cédula.");
+        setAlerta("Ha ocurrido un error al verificar la cédula");
+        setMostrarAlerta(true);
       }
     } finally {
       setIsVerifying(false);
@@ -104,6 +126,13 @@ export default function CrearCuenta() {
           Volver
         </Button>
       </div>
+
+      <Alerta
+        mostrar={mostrarAlerta}
+        Dialogo={alerta === "Cuenta creada con éxito" ? "¡Éxito!" : "Error"}
+        Descripcion={alerta}
+        cerrarAlerta={() => setMostrarAlerta(false)}
+      />
     </main>
   );
 }
