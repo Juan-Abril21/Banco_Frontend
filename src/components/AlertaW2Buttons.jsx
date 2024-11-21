@@ -33,7 +33,6 @@ const AlertaW2Buttons = ({
     setIsOpen(false);
     navigate(path2);
   };
-
   const handleEliminarClick = async () => {
     try {
       setLoadingDelete(true);
