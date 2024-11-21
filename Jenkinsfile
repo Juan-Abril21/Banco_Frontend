@@ -6,6 +6,14 @@ pipeline{
         DOCKER_IMAGE = 'banco_frontend'
     }
     stages{
+        stage('Clean') {
+            steps {
+                cleanWs()
+                checkout scm
+            }
+
+        }
+        
         stage('Initialize') {
             steps {
                 script {
@@ -38,6 +46,27 @@ pipeline{
                     withCredentials([string(credentialsId: 'DOCKERHUBPASSWORD', variable: 'DOCKERHUBPASSWORD')]) {
                         sh "docker login -u joseph888 -p $DOCKERHUBPASSWORD"
                         sh 'docker push joseph888/banco_frontend:latest'
+                    }
+                }
+            }
+        }
+        
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    withSonarQubeEnv('sonarqube') {
+                        withCredentials([string(credentialsId: 'JENKINSONARURL', variable: 'SONAR_URL'),
+                                         string(credentialsId: 'JENKINSONARFRONT', variable: 'SONAR_TOKEN')]) {
+                            // Guardar los secretos en variables de entorno y luego ejecutar el script
+                            sh '''
+                                npm install -g sonar-scanner
+                                sonar-scanner \
+                                -Dsonar.projectKey=frontend \
+                                -Dsonar.sources=src \
+                                -Dsonar.host.url=http://157.230.50.189:9100 \
+                                -Dsonar.login=$SONAR_TOKEN
+                            '''
+                        }
                     }
                 }
             }
