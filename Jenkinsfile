@@ -13,12 +13,6 @@ pipeline{
 
         }
         
-        stage('Checkout') {
-            steps {
-                git url: 'https://github.com/Juan-Abril21/Banco_Frontend.git', branch: 'main'
-            }
-        }
-        
         stage('Initialize') {
             steps {
                 script {
