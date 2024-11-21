@@ -7,7 +7,6 @@ import Depositar from "./pages/Depositar";
 
 function App() {
   return (
-    <>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/crearCliente" element={<CrearCliente />} />
@@ -15,7 +14,6 @@ function App() {
         <Route path="/cuentas" element={<Cuentas />} />
         <Route path="/depositar" element={<Depositar />} />
       </Routes>
-    </>
   );
 }
 

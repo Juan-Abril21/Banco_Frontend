@@ -49,7 +49,7 @@ const AlertaW2Buttons = ({
 
   const handleSuccessConfirm = () => {
     setShowSuccessAlert(false);
-    window.location.reload();
+    navigate(0);
   };
 
   return (
