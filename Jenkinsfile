@@ -6,13 +6,6 @@ pipeline{
         DOCKER_IMAGE = 'banco_frontend'
     }
     stages{
-        stage('Clean') {
-            steps {
-                cleanWs()
-            }
-
-        }
-        
         stage('Initialize') {
             steps {
                 script {
