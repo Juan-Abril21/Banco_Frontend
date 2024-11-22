@@ -24,12 +24,43 @@ export default function Depositar() {
   const [alerta, setAlerta] = useState("");
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
 
+  // Función para formatear el número con puntos
+  const formatearNumero = (valor) => {
+    // Eliminar cualquier caracter que no sea número
+    const numero = valor.replace(/\D/g, '');
+    
+    // Limitar a 15 caracteres
+    const numeroLimitado = numero.slice(0, 11);
+    
+    // Convertir a número y formatear con separadores de miles
+    return numeroLimitado === '' ? '' : Number(numeroLimitado).toLocaleString('es-ES');
+  };
+
+  // Función para obtener el valor numérico sin formato
+  const obtenerValorNumerico = (valorFormateado) => {
+    return valorFormateado.replace(/\./g, '');
+  };
+
+  const handleMontoChange = (e) => {
+    const valorActual = e.target.value;
+    const numeroSinFormato = valorActual.replace(/\D/g, '');
+    
+    // Solo actualiza si está dentro del límite o si está borrando
+    if (numeroSinFormato.length <= 11) {
+      const valorFormateado = formatearNumero(valorActual);
+      setMonto(valorFormateado);
+    }
+  };
+
   const handleDeposito = async () => {
-    if (!monto || isNaN(parseFloat(monto))) {
+    const montoNumerico = obtenerValorNumerico(monto);
+    
+    if (!montoNumerico || isNaN(parseFloat(montoNumerico))) {
       setAlerta("Por favor, ingrese un monto válido");
       setMostrarAlerta(true);
       return;
     }
+
     setLoading(true); 
     try {
       const data = {
@@ -38,7 +69,7 @@ export default function Depositar() {
         cedula: cedula,
         nombre: nombre,
         saldoAnterior: parseFloat(saldoAnterior),
-        monto: parseFloat(monto),
+        monto: parseFloat(montoNumerico),
         correo: correo,
       };
       await Deposito(data);
@@ -69,10 +100,12 @@ export default function Depositar() {
       <div className="formulario">
         <InputWithLabel
           nombre="Monto"
-          type="number"
+          type="text"
           nombreLabel="Monto"
           value={monto}
-          onChange={(e) => setMonto(e.target.value)}
+          onChange={handleMontoChange}
+          placeholder="0"
+          maxLength="21"
         />
 
         <Button 
