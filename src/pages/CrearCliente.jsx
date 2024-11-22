@@ -16,6 +16,29 @@ export default function CrearCliente() {
   const [alerta, setAlerta] = useState(""); 
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
 
+  const handleNombreChange = (e) => {
+    const valor = e.target.value;
+    const soloLetras = valor.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+    
+    if (soloLetras.length <= 50) {
+      setNombre(soloLetras);
+    }
+  };
+
+  const handleCedulaChange = (e) => {
+    const valor = e.target.value;
+    if (valor.length <= 11) {
+      setCedula(valor);
+    }
+  };
+
+  const handleCorreoChange = (e) => {
+    const valor = e.target.value;
+    if (valor.length <= 50) {
+      setCorreo(valor);
+    }
+  };
+
   const handleRegistrar = async () => {
     if (!nombre || !cedula || !correo) {
       setAlerta("Todos los campos son obligatorios");
@@ -55,7 +78,8 @@ export default function CrearCliente() {
           type={"text"}
           nombreLabel={"Nombre"}
           value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
+          onChange={handleNombreChange}
+          placeholder="Ingrese el nombre"
         />
         <InputWithLabel
           nombre={"Cedula"}
@@ -63,14 +87,14 @@ export default function CrearCliente() {
           nombreLabel={"Cedula"}
           value={cedula}
           inputMode={"numeric"}
-          onChange={(e) => setCedula(e.target.value)}
+          onChange={handleCedulaChange}
         />
         <InputWithLabel
           nombre={"Correo"}
           type={"email"}
           nombreLabel={"Correo"}
           value={correo}
-          onChange={(e) => setCorreo(e.target.value)}
+          onChange={handleCorreoChange}
         />
 
         <Button

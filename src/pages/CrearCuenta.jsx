@@ -49,6 +49,13 @@ export default function CrearCuenta() {
     }
   };
 
+  const handleCedulaChange = (e) => {
+    const valor = e.target.value;
+    if (valor.length <= 11) {
+      setCedula(valor);
+    }
+  };
+
   const verificarCedula = async () => {
     if (!cedula) {
       setAlerta("Por favor ingrese una cédula");
@@ -96,7 +103,7 @@ export default function CrearCuenta() {
           nombreLabel={"Cedula"}
           value={cedula}
           inputMode={"numeric"}
-          onChange={(e) => setCedula(e.target.value)}
+          onChange={handleCedulaChange}
         />
 
         {isVerifying ? (
